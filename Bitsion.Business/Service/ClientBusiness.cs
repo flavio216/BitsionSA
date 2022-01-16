@@ -1,9 +1,9 @@
 ﻿using Bitsion.ContextData;
-using Bitsion.Entities.Models;
+using Bitsion.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bitsion.Business.Service
+namespace Bitsion.Business
 {
     public class ClientBusiness
     {
@@ -23,15 +23,15 @@ namespace Bitsion.Business.Service
             }
         }
 
-        public List<Client> SearchClient(string value)
+        public static List<Client> SearchClient(string value)
         {
             using(var DB = new BitsionDB())
             {
-                return DB.Clients.Where(c => c.cli_Name.Contains(value) || c.cli_doc_Document.doc_Document.ToString().Contains(value)).ToList();
+                return DB.Clients.Where(c => c.cli_Name.Contains(value) || c.cli_doc_DocumentType.ToString().Contains(value)).ToList();
             }
         }
 
-        public void CreatePerson(Client c)
+        public void CreateClient(Client c)
         {
             using (var db = new BitsionDB())
             {

@@ -1,4 +1,4 @@
-﻿using Bitsion.Business.Service;
+﻿using Bitsion.Business;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bitsion.WebApi.Controllers

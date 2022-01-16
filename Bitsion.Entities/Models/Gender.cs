@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bitsion.Entities.Models
+namespace Bitsion.Entities
 {
     public class Gender
     {

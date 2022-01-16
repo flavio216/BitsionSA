@@ -1,9 +1,9 @@
 ﻿using Bitsion.ContextData;
-using Bitsion.Entities.Models;
+using Bitsion.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bitsion.Business.Service
+namespace Bitsion.Business
 {
     public class DocumentTypeBusiness
     {

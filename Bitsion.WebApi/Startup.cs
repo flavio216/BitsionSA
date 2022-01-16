@@ -1,3 +1,4 @@
+using Bitsion.Business;
 using Bitsion.Business.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,6 +35,7 @@ namespace Bitsion.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Bitsion.WebApi", Version = "v1" });
             });
 
+
             services.AddScoped<ClientBusiness>();
             services.AddScoped<DocumentTypeBusiness>();
             services.AddScoped<GenderBusiness>();
@@ -48,6 +50,12 @@ namespace Bitsion.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bitsion.WebApi v1"));
             }
+            app.UseCors(x => x
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .SetIsOriginAllowed(origin => true) // allow any origin
+                                                        //.WithOrigins("https://localhost:44351")); // Allow only this origin can also have multiple origins separated with comma
+                    .AllowCredentials()); // allow credentials
 
             app.UseHttpsRedirection();
 

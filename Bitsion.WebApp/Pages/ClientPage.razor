@@ -1,0 +1,81 @@
+﻿@page "/Client"
+
+@using Entities
+@using Business
+@using System.Linq;
+
+@inject HttpClient Http
+
+<hr />
+<label class="col-form-label">Buscador</label>
+@*<input type="text" @bind="strProduct" @oninput="SearchPerson" />*@
+<hr />
+@if (clients == null)
+{
+    <p>Cargando</p>
+}
+else
+{
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre y Apellido</th>
+                <th>Documento</th>
+                <th>Genero</th>
+                <th>Conductor</th>
+                <th>Diabetico</th>
+                <th>Otras Enfermedades</th>
+                <th>Opciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in clients.ToList())
+            {
+                <tr>
+                    <td>@c.cli_Id</td>
+                    <td>@c.cli_Name</td>
+                    <td>@c.cli_doc_DocumentType</td>
+                    <td>@SetGender(c.cli_gen_Gender)</td>
+                    <td>@c.ToBooleanString(c.cli_Drive)</td>
+                    <td>@c.ToBooleanString(c.cli_Diabetic)</td>
+                    <td>@c.cli_Diseases</td>
+                    <td>
+                        <a class="btn btn-info" href="person/update/@c.cli_Id ">Editar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code { Client[] clients { get; set; }
+    List<Gender> genders { get; set; }
+    private string strProduct;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clients = await Http.GetJsonAsync<Client[]>
+        ("https://localhost:44343/api/client/list");
+        genders = await Http.GetJsonAsync<List<Gender>>
+        ("https://localhost:44343/api/gender/list");
+    }
+
+    //private void SearchPerson(ChangeEventArgs e)
+    //{
+    //    if (e.Value.ToString().Equals(string.Empty))
+    //    {
+    //        clients = ClientBusiness.ClientList();
+    //    }
+    //    else
+    //    {
+    //        clients = ClientBusiness.SearchClient(e.Value.ToString());
+    //    }
+    //}
+    private string SetGender(int id)
+    {
+        return genders.Where(g => g.gen_Id == id).SingleOrDefault().gen_Gender;
+    }
+}
+

@@ -1,5 +1,8 @@
-﻿using Bitsion.Business.Service;
+﻿using Bitsion.Business;
+using Bitsion.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bitsion.WebApi.Controllers
 {
@@ -12,12 +15,21 @@ namespace Bitsion.WebApi.Controllers
         {
             this._ClientBusiness = clientBusiness;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("list")]
         public IActionResult GetClients()
         {
             return Ok(_ClientBusiness.ClientList());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("addClient")]
+        public IActionResult AddClient([FromBody] Client client)
+        {
+            _ClientBusiness.CreateClient(client);
+            return Ok(true);
         }
     }
 }
