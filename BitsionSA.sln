@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bitsion.ContextData", "Bits
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bitsion.WebApi", "Bitsion.WebApi\Bitsion.WebApi.csproj", "{C5C37D96-3CC3-4094-9630-781EEB8B51F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bitsion.WebApp", "Bitsion.WebApp\Bitsion.WebApp.csproj", "{5C79E77F-F33F-4891-BA97-4A4BD2C68A19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bitsion.WebApp", "Bitsion.WebApp\Bitsion.WebApp.csproj", "{5C79E77F-F33F-4891-BA97-4A4BD2C68A19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

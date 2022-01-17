@@ -31,5 +31,15 @@ namespace Bitsion.WebApi.Controllers
             _ClientBusiness.CreateClient(client);
             return Ok(true);
         }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("updateClient")]
+        public IActionResult UpdateClient([FromBody] Client client)
+        {
+            _ClientBusiness.UpdateClient(client);
+            return Ok(true);
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Bitsion.Business
             }
         }
 
-        public void UpdatePerson(Client c)
+        public void UpdateClient(Client c)
         {
             using (var db = new BitsionDB())
             {

@@ -3,7 +3,7 @@ using Bitsion.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bitsion.Business.Service
+namespace Bitsion.Business
 {
     public class GenderBusiness
     {
