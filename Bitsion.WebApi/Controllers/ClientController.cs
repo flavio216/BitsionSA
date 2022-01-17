@@ -41,5 +41,13 @@ namespace Bitsion.WebApi.Controllers
             _ClientBusiness.UpdateClient(client);
             return Ok(true);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("searchClient/{id}")]
+        public IActionResult SearchById(int id)
+        {
+            return Ok(_ClientBusiness.ClientById(id));
+        }
     }
 }

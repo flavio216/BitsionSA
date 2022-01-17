@@ -11,19 +11,11 @@ namespace Bitsion.Business
         {
             using(var db = new BitsionDB())
             {
-                return db.Clients.Where(c => c.cli_Active == true).ToList();
+                return db.Clients.ToList();
             }
         }
 
-        public List<Client> ClientDelete()
-        {
-            using(var db = new BitsionDB())
-            {
-                return db.Clients.Where(c => c.cli_Active == false).ToList();
-            }
-        }
-
-        public static List<Client> SearchClient(string value)
+        public List<Client> SearchClient(string value)
         {
             using(var DB = new BitsionDB())
             {
@@ -49,12 +41,12 @@ namespace Bitsion.Business
             }
         }
 
-        //public static Client PersonByIdentification(int ident)
-        //{
-        //    using (var db = new BitsionDB())
-        //    {
-        //        return db.Clients.ToList().LastOrDefault(c => c.identification == ident);
-        //    }
-        //}
+        public Client ClientById(int id)
+        {
+            using (var db = new BitsionDB())
+            {
+                return db.Clients.ToList().LastOrDefault(c => c.cli_Id == id);
+            }
+        }
     }
 }

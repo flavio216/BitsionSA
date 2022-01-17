@@ -8,7 +8,7 @@
 
 <hr />
 <label class="col-form-label">Buscador</label>
-@*<input type="text" @bind="strProduct" @oninput="SearchPerson" />*@
+<input type="text" @bind="strClient" @oninput="SearchClient" />
 <hr />
 @if (clients == null)
 {
@@ -21,61 +21,78 @@ else
             <tr>
                 <th>ID</th>
                 <th>Nombre y Apellido</th>
+                <th>Tipo Documento</th>
                 <th>Documento</th>
                 <th>Genero</th>
-                <th>Conductor</th>
-                <th>Diabetico</th>
-                <th>Otras Enfermedades</th>
-                <th>Opciones</th>
+                <th>Conductor?</th>
+                <th>Diabetico?</th>
+                <th>Enfermedades</th>
+                <th>Esta activo?</th>
+                <th></th>
 
             </tr>
         </thead>
         <tbody>
-            @foreach (var c in clients.ToList())
+            @foreach (var c in clientList)
             {
-                <tr>
-                    <td>@c.cli_Id</td>
-                    <td>@c.cli_Name</td>
-                    <td>@c.cli_doc_DocumentType</td>
-                    <td>@SetGender(c.cli_gen_Gender)</td>
-                    <td>@c.ToBooleanString(c.cli_Drive)</td>
-                    <td>@c.ToBooleanString(c.cli_Diabetic)</td>
-                    <td>@c.cli_Diseases</td>
-                    <td>
-                        <a class="btn btn-info" href="client/update/@c.cli_Id ">Editar</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@c.cli_Id</td>
+                <td>@c.cli_Name</td>
+                <td>@SetDni(c.cli_doc_DocumentType)</td>
+                <td>@c.cli_Dni</td>
+                <td>@SetGender(c.cli_gen_Gender)</td>
+                <td>@c.ToBooleanString(c.cli_Drive)</td>
+                <td>@c.ToBooleanString(c.cli_Diabetic)</td>
+                <td>@c.cli_Diseases</td>
+                <td>@c.ToBooleanString(c.cli_Active)</td>
+                <td>
+                    <a class="btn btn-info" href="client/update/@c.cli_Id ">Editar</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
 }
 
-@code { Client[] clients { get; set; }
+@code { 
+    List<Client> clientList;
+    Client[] clients { get; set; }
     List<Gender> genders { get; set; }
-    private string strProduct;
+    List<DocumentType> documentTypes { get; set; }
+    private string strClient;
 
     protected override async Task OnInitializedAsync()
     {
         clients = await Http.GetJsonAsync<Client[]>
         ("https://localhost:44343/api/client/list");
+        documentTypes = await Http.GetJsonAsync<List<DocumentType>>
+        ("https://localhost:44343/api/documentType/list");
+        clientList = clients.ToList();
         genders = await Http.GetJsonAsync<List<Gender>>
         ("https://localhost:44343/api/gender/list");
     }
 
-    //private void SearchPerson(ChangeEventArgs e)
-    //{
-    //    if (e.Value.ToString().Equals(string.Empty))
-    //    {
-    //        clients = ClientBusiness.ClientList();
-    //    }
-    //    else
-    //    {
-    //        clients = ClientBusiness.SearchClient(e.Value.ToString());
-    //    }
-    //}
     private string SetGender(int id)
     {
         return genders.Where(g => g.gen_Id == id).SingleOrDefault().gen_Gender;
+    }
+
+    private string SetDni(int id)
+    {
+        var test = documentTypes.Where(d => d.doc_Id == id).SingleOrDefault().doc_Document;
+        return test;
+    }
+
+    private void SearchClient(ChangeEventArgs e)
+    {
+        if (e.Value.ToString().Equals(string.Empty))
+        {
+            clientList = clients.ToList();
+        }
+        else
+        {
+            clientList = clientList.Where(c => c.cli_Name.StartsWith(e.Value.ToString()) || c.cli_Dni.StartsWith(e.Value.ToString()) || c.cli_Id.ToString().StartsWith(e.Value.ToString())).ToList();
+        }
     }
 }
 

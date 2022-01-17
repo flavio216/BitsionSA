@@ -71,13 +71,6 @@
             </div>
         </div>
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <div class="container-fluid bg-danger">
-        <img src="img_club_futbol/111111.jpg" class="rounded mx-auto d-block" alt="..." />
-    </div>
 </body>
 </html>
 
@@ -90,41 +83,19 @@
 
     public async Task<string> SaveClient()
     {
+        client.cli_Active = true;
         var response = await Http.PostAsJsonAsync("https://localhost:44343/api/client/addClient", client);
-        sucess = response.StatusCode.ToString();
-        return response.StatusCode.ToString();
+        NavManager.NavigateTo("/Client");
+        return response.ToString();
     }
-
-
 
     protected override async Task OnInitializedAsync()
     {
         genders = await Http.GetJsonAsync<List<Gender>>
-       // documentType = await Http.GetJsonAsync<List<DocumentType>>
-        ("https://localhost:44343/api/gender/list");
+            ("https://localhost:44343/api/gender/list");
+        documentType = await Http.GetJsonAsync<List<DocumentType>>
+            ("https://localhost:44343/api/documentType/list");
         client.cli_gen_Gender = 1;
     }
-
-    //private async Task SavePerson()
-    //{
-    //    bool confirmed = await JsRuntime.InvokeAsync<bool>("confirmed", "Confirmación", "¿Seguro que deseas registrar esta persona?", "question");
-    //    if (confirmed)
-    //    {
-    //        try
-    //        {
-    //            await JsRuntime.InvokeAsync<bool>("Alert", "Se agregó con éxito", "success");
-    //        }
-    //        catch (Exception)
-    //        {
-
-    //        }
-    //        if (!person.otherDisease)
-    //            person.disease = "N/A";
-    //        B_Person.CreatePerson(person);
-    //        NavManager.NavigateTo("/");
-    //    }
-
-
-    //}
 }
 
