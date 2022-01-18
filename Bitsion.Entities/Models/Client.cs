@@ -7,8 +7,13 @@ namespace Bitsion.Entities
         [Key]
         public int cli_Id { get; set; }
 
+        [Required(ErrorMessage = "Debe ingresar un nombre válido.")]
+        [StringLength(25, ErrorMessage = "Maximo 25 caracteres.")]
+        [DataType(DataType.Text)]
         public string cli_Name { get; set; }
 
+        [Range(1000000, 99999999, ErrorMessage = "Ingrese un DNI valido.")]
+        [Required(ErrorMessage = "Debe ingresar un DNI.")]
         public string cli_Dni { get; set; }
 
         public int cli_doc_DocumentType { get; set; }
@@ -24,14 +29,15 @@ namespace Bitsion.Entities
         public bool cli_Diabetic { get; set; }
 
         public bool cli_OtherDiseases { get; set; }
+
         public string cli_Diseases { get; set; }
 
         public string ToBooleanString(bool flag)
         {
             if (flag)
-                return "SI";
+                return "Si";
             else
-                return "NO";
+                return "No";
         }
     }
 

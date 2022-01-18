@@ -1,0 +1,96 @@
+﻿@page "/Create"
+
+@using Bitsion.Entities
+@using Bitsion.Client
+
+@inject NavigationManager NavManager
+@inject IJSRuntime JsRuntime
+@inject HttpClient Http
+<html lang="en">
+
+<body background="img1.jpg">
+    <div class="container px-lg-5">
+        <div class="row mx-lg-n5">
+            <div class="col py-3 px-lg-5 border bg-light">
+                <EditForm Model="client" OnValidSubmit="@SaveClient">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Tipo Dni:</label>
+                        <InputSelectNumber @bind-Value="client.cli_doc_DocumentType" class="form-control">
+                            @foreach (var d in documentType)
+                            {
+                        <option value="@d.doc_Id">@d.doc_Document</option>}
+                        </InputSelectNumber>
+                    </div>
+                    <div class="form-group">
+                        <label>Dni:</label>
+                        <InputText @bind-Value="client.cli_Dni" maxlength="8" minlength="7" max="99999999" placeholder="Ingrese su DNI" class="form-control"></InputText>
+                        <ValidationMessage For="@(() => client.cli_Dni)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre:</label>
+                        <InputText type="text" @bind-Value="client.cli_Name" class="form-control" placeholder="Ingrese su Nombre" required />
+                        <ValidationMessage For="@(() => client.cli_Name)" />
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo:</label>
+                        <InputSelectNumber @bind-Value="client.cli_gen_Gender" class="form-control">
+                            @foreach (var g in genders)
+                            {
+                <option value="@g.gen_Id">@g.gen_Gender</option>}
+                        </InputSelectNumber>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Maneja?</label>
+                        <InputCheckbox @bind-Value="client.cli_Drive" class="form-control"></InputCheckbox>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Es diabetico?</label>
+                        <InputCheckbox @bind-Value="client.cli_Diabetic" class="form-control"></InputCheckbox>
+                    </div>
+                    <div class="form-group">
+                        <label>¿Otras enfermedades?</label>
+                        <InputCheckbox @bind-Value="client.cli_OtherDiseases" class="form-control"></InputCheckbox>
+                    </div>
+                    @if (client.cli_OtherDiseases)
+                    {
+                <div class="form-group container-fluid">
+                    <label>Indique cual.</label>
+                    <InputTextArea @bind-Value="client.cli_Diseases" class="form-control"></InputTextArea>
+                    <ValidationMessage For="@(() => client.cli_Diseases)" />
+                </div>}
+
+                    <input type="submit" class="btn btn-dark btn-lg btn-block" value="Registrar Cliente" />
+                    <p>@sucess</p>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+@code { 
+
+    Client client = new Client();
+    List<Gender> genders = new List<Gender>();
+    List<DocumentType> documentType = new List<DocumentType>();
+    string sucess;
+
+    public async Task<string> SaveClient()
+    {
+        client.cli_Active = true;
+        var response = await Http.PostAsJsonAsync(Program.urlApi + "client/addClient", client);
+        NavManager.NavigateTo("/Client");
+        return response.ToString();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        genders = await Http.GetJsonAsync<List<Gender>>
+            (Program.urlApi + "gender/list");
+        documentType = await Http.GetJsonAsync<List<DocumentType>>
+            (Program.urlApi + "documentType/list");
+        client.cli_gen_Gender = 1;
+    }
+}
+
