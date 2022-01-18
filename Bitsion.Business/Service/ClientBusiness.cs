@@ -15,14 +15,6 @@ namespace Bitsion.Business
             }
         }
 
-        public static List<Client> SearchClient(string value)
-        {
-            using(var DB = new BitsionDB())
-            {
-                return DB.Clients.Where(c => c.cli_Name.ToLower().Trim().StartsWith(value) || c.cli_doc_DocumentType.ToString().StartsWith(value)).ToList();
-            }
-        }
-
         public void CreateClient(Client c)
         {
             using (var db = new BitsionDB())

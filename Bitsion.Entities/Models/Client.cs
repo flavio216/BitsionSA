@@ -9,7 +9,8 @@ namespace Bitsion.Entities
 
         [Required(ErrorMessage = "Debe ingresar un nombre válido.")]
         [StringLength(25, ErrorMessage = "Maximo 25 caracteres.")]
-        [DataType(DataType.Text)]
+        [MinLength(2, ErrorMessage = "Debe ingresar un nombre válido.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Solo se permite letras")]
         public string cli_Name { get; set; }
 
         [Range(1000000, 99999999, ErrorMessage = "Ingrese un DNI valido.")]
